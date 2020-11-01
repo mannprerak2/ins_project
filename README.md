@@ -5,21 +5,26 @@ Links -
 - [gladwin2020.pdf - Google Drive](https://drive.google.com/file/d/1RHPsv31RopK6aJbIQYtN3hEVvDL6-3rw/view)
 
 ### Setup -
-
 1. Create Python3 virtual environment
-
 ```bash
     python3 -m venv venv/
 ```
-
 2. Launch virtual environment
-
 ```bash
     source venv/bin/activate
 ```
-
 3. Install dependencies
-
 ```bash
     pip install -r requirements.txt
+```
+
+### Running basic stegano
+> The output for merge and input for unmerge must be PNG format.
+
+```bash
+# merge
+python3 stegano.py merge --img1 data/img1.jpg --img2 data/img2.jpg --output merge.png
+
+# unmerge
+python3 stegano.py unmerge --img gen.png --output unmerge.png
 ```
