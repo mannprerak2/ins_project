@@ -1,5 +1,6 @@
 import random
 from ecc import EC
+from stegano import lsb
 from utils import *
 from hill_cipher import *
 
@@ -71,6 +72,11 @@ print("Self invertible matrix key is: ")
 printMatrix(k)
 
 text = input("Enter the data to be encrypted: ")
-cipher = hill_encryption(text, k)
+cipher_text = hill_encryption(text, k)
 
-print("Encrypted data is: ", cipher)
+print("Encrypted data is: ", cipher_text)
+
+secret_image = lsb.hide("./data/img.png", cipher_text)
+secret_image.save("./output/img.png")
+
+print("Hid cipher text in image successfuly")
