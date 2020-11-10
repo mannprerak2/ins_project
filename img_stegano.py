@@ -10,7 +10,12 @@ class Steganography(object):
         :param rgb: An integer tuple (e.g. (220, 110, 96))
         :return: A string tuple (e.g. ("00101010", "11101011", "00010110"))
         """
-        r, g, b = rgb
+        r, g, b = (0, 0, 0)
+        if len(rgb) == 3:
+            r, g, b = rgb
+        else:
+            r, g, b,a  = rgb
+
         return ('{0:08b}'.format(r),
                 '{0:08b}'.format(g),
                 '{0:08b}'.format(b))
