@@ -1,7 +1,8 @@
 import random
 from ecc import EC
 from utils import *
-from numpy.linalg import inv
+from hill_cipher import *
+
 
 ec = EC(1, 18, 19)
 
@@ -68,5 +69,8 @@ k.append([
 
 print("Self invertible matrix key is: ")
 printMatrix(k)
-print("Inverse of this -")
-printMatrix(inv(k))
+
+text = input("Enter the data to be encrypted: ")
+cipher = hill_encryption(text, k)
+
+print("Encrypted data is: ", cipher)

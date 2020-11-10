@@ -3,7 +3,7 @@ from utils import *
 
 # N = random.randrange(10) + 3
 N = 3
-[a, b, c, d] = list(map(int, input().split()))
+[a, b, c, d] = [3, 6, 5, 2]
 
 # Self invertible key matrix
 k = []
