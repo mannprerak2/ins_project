@@ -9,7 +9,6 @@ ec = EC(1, 18, 19)
 
 # Selecting a common point for both
 o, _ = ec.at(7)
-print("Common point selected is ({}, {})\n".format(o.x, o.y))
 
 # a -> sender, b -> receiver
 pvt_a = int(input("Enter sender's private key: "))
@@ -20,10 +19,10 @@ pvt_b = int(input("Enter receiver's private key: "))
 pub_b = ec.mul(o, pvt_b)
 print("Public key of receiver is ({}, {})\n".format(pub_b.x, pub_b.y))
 
-# Encryption
-# Sender encrypts data before sending
+# Decryption
+# Receiver decrypts data
 
-K = ec.mul(pub_b, pvt_a)
+K = ec.mul(pub_a, pvt_b)
 x, y = K.x, K.y
 
 K1 = ec.mul(o, x)
@@ -60,6 +59,7 @@ k.append([
     (-a) % 94,
     (-b) % 94,
 ])
+
 k.append([
     moddiv(c, N, 94),
     moddiv(1 + d, N, 94),
@@ -70,12 +70,8 @@ k.append([
 print("Self invertible matrix key is: ")
 printMatrix(k)
 
-text = input("Enter the data to be encrypted: ")
-cipher_text = hill_encryption(text, k)
+recovered_text = lsb.reveal("./output/img.png")
+print("Text recovered from image:", recovered_text)
 
-print("Encrypted data is: ", cipher_text)
-
-secret_image = lsb.hide("./data/img.png", cipher_text)
-secret_image.save("./output/img.png")
-
-print("Hid cipher text in image successfuly")
+decrypted_text = hill_decryption(recovered_text, k)
+print("Decrypted text:", decrypted_text)
