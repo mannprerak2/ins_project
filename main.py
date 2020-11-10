@@ -1,6 +1,7 @@
 import random
 from ecc import EC
 from utils import *
+from numpy.linalg import inv
 
 ec = EC(1, 18, 19)
 
@@ -67,3 +68,5 @@ k.append([
 
 print("Self invertible matrix key is: ")
 printMatrix(k)
+print("Inverse of this -")
+printMatrix(inv(k))
