@@ -1,6 +1,8 @@
-import lsb
+import dct
+import json
 import config
 import random
+import stegano
 from ecc import EC
 from utils import *
 from stegano import lsb
@@ -8,7 +10,6 @@ from hill_cipher import *
 
 
 class Prog:
-    lsbobj = lsb.LSB()
 
     def keyGenerator(self):
         """Returns a self invertible matrix key."""
@@ -77,32 +78,41 @@ class Prog:
         printMatrix(k)
         return k
 
-    def encryptAndHide(self, keyMatrix: list, inputImage, text):
-        cipher_text = hill_encryption(text, keyMatrix)
-
-        print("Encrypted data is: ", cipher_text)
-
-        secret_image = self.lsbobj.encode_image(
-            inputImage, cipher_text)
-
-        print("Hid cipher text in image successfuly")
-        return secret_image
-
-    def recoverAndDecrypt(self, keyMatrix: list, inputImage):
-        recovered_text = self.lsbobj.decode_image(inputImage)
-        print("Text recovered from image:", recovered_text)
-
-        decrypted_text = hill_decryption(recovered_text, keyMatrix)
-        return decrypted_text
-
 
 prog = Prog()
 
+# Generate matrix key for Hill Cipher using EEC
 k = prog.keyGenerator()
 
-# Encrypt input message using Hill Cipher and hide in an image
-prog.encryptAndHide(k, config.ORIGINAL_IMAGE, config.INPUT_MESSAGE).save(config.OUTPUT_IMAGE)
+# Get DCT coeffs for the secret image
+dct_coeffs = dct.get_dct_coeffs(config.SECRET_IMAGE)
 
+# Encrypt the message using Hill Cipher
+encrypted_text = hill_encryption(config.INPUT_MESSAGE, k)
 
-# Recover ciphertext from image and decrypt using hill cipher
-print('Decrypted ciphertext:', prog.recoverAndDecrypt(k, config.OUTPUT_IMAGE))
+# Serialise the object containing payload
+encoded = json.dumps({'dct': dct_coeffs, 'cipher': encrypted_text})
+
+# Save the encoded information to the image
+stegano.lsb.hide(config.ORIGINAL_IMAGE, encoded).save(config.OUTPUT_IMAGE)
+print("Saved information to image")
+
+# Pause before decryption begins
+input("\nHit enter to start decryption")
+
+# Recover text from saved image
+recovered_text = stegano.lsb.reveal(config.OUTPUT_IMAGE)
+
+data = json.loads(recovered_text)
+
+# Recover data from the serialised string
+ciphertext = data['cipher']
+recovered_coeffs = data['dct']
+
+# Decrypt text using Hill Cipher
+decrypted_text = hill_decryption(ciphertext, k)
+print("Decrypted text:", decrypted_text)
+
+# Regenerate saved image using recovered coefficients
+dct.regenerate_images(recovered_coeffs, config.RECOVERED_IMAGE)
+print("Recovered image")

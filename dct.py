@@ -1,6 +1,4 @@
 import scipy
-import json
-import base64
 import numpy as np
 from numpy import r_
 from numpy import zeros
@@ -33,8 +31,17 @@ def get_dct_coeffs(img_path):
 
     dct_thresh = np.around(dct_thresh, 3)
 
-    return dct_thresh
+    return dct_thresh.tolist()
 
-# ser = json.dumps({'dct': dct_thresh.tolist()})
-# print(len(ser))
-# obj = json.loads(ser)
+
+def regenerate_images(dct_coeffs, path):
+    dct_thresh = np.array(dct_coeffs)
+    imsize = dct_thresh.shape
+
+    im_dct = np.zeros(imsize)
+
+    for i in r_[:imsize[0]:8]:
+        for j in r_[:imsize[1]:8]:
+            im_dct[i:(i+8), j:(j+8)] = idct2(dct_thresh[i:(i+8), j:(j+8)])
+
+    plt.imsave(path, im_dct)

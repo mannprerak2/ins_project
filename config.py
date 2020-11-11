@@ -9,5 +9,6 @@ ELLIPTIC_CURVE = ecc.EC(1, 18, 19)
 ORIGINAL_IMAGE = './data/img1.jpg'
 SECRET_IMAGE = './data/lena_tiny.png'
 OUTPUT_IMAGE = './output/img.png'
+RECOVERED_IMAGE = './output/secret.png'
 
 INPUT_MESSAGE = input('Enter Message to Hide: ')
