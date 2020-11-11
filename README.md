@@ -18,13 +18,8 @@ Links -
     pip install -r requirements.txt
 ```
 
-### Running basic stegano
-> The output for merge and input for unmerge must be PNG format.
+### Running
 
 ```bash
-# merge
-python3 stegano.py merge --img1 data/img1.jpg --img2 data/img2.jpg --output merge.png
-
-# unmerge
-python3 stegano.py unmerge --img gen.png --output unmerge.png
+python3 main.py
 ```

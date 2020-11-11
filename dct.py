@@ -15,7 +15,7 @@ def idct2(a):
 
 
 def get_dct_coeffs(img_path):
-    im = plt.imread("./data/lena_tiny.png")
+    im = plt.imread(img_path)
 
     imsize = im.shape
     dct_res = np.zeros(imsize)
@@ -27,8 +27,9 @@ def get_dct_coeffs(img_path):
 
     thresh = 0.00165
     dct_thresh = dct_res * (abs(dct_res) > (thresh * np.max(dct_res)))
-    percent_nonzeros = np.sum(dct_thresh != 0.0) / (imsize[0] * imsize[1] * 1.0)
-
+    percent_nonzeros = np.sum(dct_thresh != 0.0) / \
+        (imsize[0] * imsize[1] * 1.0)
+    print('percentage_nonzeros:', percent_nonzeros*100)
     dct_thresh = np.around(dct_thresh, 3)
 
     return dct_thresh.tolist()
@@ -44,4 +45,4 @@ def regenerate_images(dct_coeffs, path):
         for j in r_[:imsize[1]:8]:
             im_dct[i:(i+8), j:(j+8)] = idct2(dct_thresh[i:(i+8), j:(j+8)])
 
-    plt.imsave(path, im_dct)
+    plt.imsave(path, im_dct, cmap="gray")
