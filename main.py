@@ -5,7 +5,6 @@ from utils import *
 from hill_cipher import *
 import config
 import lsb
-import dct
 
 
 class Prog:
@@ -101,13 +100,7 @@ class Prog:
 
 prog = Prog()
 
-dct_obj = dct.DCT()
-dct_obj.encode_image("hahahahahahaheheleasdaskjdnaskdakn",
-                     config.ORIGINAL_IMAGE, config.DCT_IMAGE)
-print('Decoded DCT:', dct_obj.decode_image(config.DCT_IMAGE))
-
 k = prog.keyGenerator()
 
-prog.encryptImage(k, config.DCT_IMAGE).save(config.ENCRYPTED_IMAGE)
-print('Decoded DCT:', dct_obj.decode_image(config.ENCRYPTED_IMAGE))
-print('Decrypted ciphertext:', prog.decryptImage(k, config.ENCRYPTED_IMAGE))
+prog.encryptImage(k, config.ORIGINAL_IMAGE).save(config.OUTPUT_IMAGE)
+print('Decrypted ciphertext:', prog.decryptImage(k, config.OUTPUT_IMAGE))
