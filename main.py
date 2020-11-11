@@ -1,10 +1,10 @@
+import lsb
+import config
 import random
 from ecc import EC
-from stegano import lsb
 from utils import *
+from stegano import lsb
 from hill_cipher import *
-import config
-import lsb
 
 
 class Prog:
@@ -77,9 +77,7 @@ class Prog:
         printMatrix(k)
         return k
 
-    def encryptImage(self, keyMatrix: list, inputImage):
-        # text = input("Enter the data to be encrypted: ")
-        text = config.INPUT_MESSAGE
+    def encryptAndHide(self, keyMatrix: list, inputImage, text):
         cipher_text = hill_encryption(text, keyMatrix)
 
         print("Encrypted data is: ", cipher_text)
@@ -90,7 +88,7 @@ class Prog:
         print("Hid cipher text in image successfuly")
         return secret_image
 
-    def decryptImage(self, keyMatrix: list, inputImage):
+    def recoverAndDecrypt(self, keyMatrix: list, inputImage):
         recovered_text = self.lsbobj.decode_image(inputImage)
         print("Text recovered from image:", recovered_text)
 
@@ -102,5 +100,9 @@ prog = Prog()
 
 k = prog.keyGenerator()
 
-prog.encryptImage(k, config.ORIGINAL_IMAGE).save(config.OUTPUT_IMAGE)
-print('Decrypted ciphertext:', prog.decryptImage(k, config.OUTPUT_IMAGE))
+# Encrypt input message using Hill Cipher and hide in an image
+prog.encryptAndHide(k, config.ORIGINAL_IMAGE, config.INPUT_MESSAGE).save(config.OUTPUT_IMAGE)
+
+
+# Recover ciphertext from image and decrypt using hill cipher
+print('Decrypted ciphertext:', prog.recoverAndDecrypt(k, config.OUTPUT_IMAGE))
