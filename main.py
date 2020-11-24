@@ -28,6 +28,13 @@ def generateKey():
     # Encryption
     # Sender encrypts data before sending
 
+    # pub_b = o * pvt_b
+    # K = o * (pvt_b + pvt_a)
+
+    # pvt_b, o, pub_a
+    # K = pub_a * pvt_b
+    # K = o * (pvt_a + pvt_b)
+
     K = ec.mul(pub_b, pvt_a)
     x, y = K.x, K.y
 
